@@ -2,6 +2,7 @@
 #include <sys/socket.h>
 #include <errno.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 
 #define PORT 8080
 
@@ -44,15 +45,12 @@ int main() {
 // close connection when accepted
     for (;;) {
         int client_socket = accept(sockfd, (struct sockaddr *)&host_addr, (socklen_t *)&host_addrlen);
-        if (client_socket == -1) {
+        if (client_socket < 0) {
             perror("webserver (accept)");
-            return 1;
+            continue;
         }
-        printf("client connected\n");
+        printf("client accepted\n");
         close(client_socket);
     }
-
-
-
     return 0;
 }
